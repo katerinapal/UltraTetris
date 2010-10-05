@@ -8,7 +8,28 @@
         var tabuleiro = new Tabuleiro();
         tabuleiro.gerar_tabuleiro(10, 20);
         peca.setar_forma(L);
+        pecas = ["#o", "#l", "#j", "#i", "#s", "#z", "#t"];
         
+        function detectar_colisao(){
+            if (peca.x > tabuleiro.largura || peca.x + 2 < 0 || peca.y  + 2 + 7 > tabuleiro.altura){
+                return true;
+            } else {
+                return false;
+            }
+        }
+        
+        function movimento_livre(){
+            for (var i = 0; i < 4; i++){
+                for (var j = 0; j < 4; j++){
+                    if (peca.matriz[i][j] == 1){
+                        if (tabuleiro.matriz[i + peca.y + 1][j + peca.x] == 1){
+                            return false;
+                        }
+                    } 
+                }
+            }
+            return true;
+        }
         
         function renderizar_peca(peca_a_redenrizar){
             for (var i = 0; i < 4; i++){
@@ -16,10 +37,8 @@
                     var style = "";
                     if (peca_a_redenrizar.matriz[i][j] == 1){
                         style="background-color: #FF0000; width: 32px; height: 32px;";
-                    } else {
-                        style="background-color: #C3C3C3; width: 32px; height: 32px;";
-                    }
-                    $("#celula-" + (i + peca_a_redenrizar.y) + "-" + (j + peca_a_redenrizar.x)).attr("style", style);
+                        $("#celula-" + (i + peca_a_redenrizar.y) + "-" + (j + peca_a_redenrizar.x)).attr("style", style);
+                    } 
                 }
             }
         }
@@ -30,19 +49,58 @@
                     var style = "";
                     if (peca_a_redenrizar.matriz[i][j] == 1){
                         style="background-color: #C3C3C3; width: 32px; height: 32px;";
-                    } else {
-                        style="background-color: #C3C3C3; width: 32px; height: 32px;";
-                    }
-                    $("#celula-" + (i + peca_a_redenrizar.y) + "-" + (j + peca_a_redenrizar.x)).attr("style", style);
+                        $("#celula-" + (i + peca_a_redenrizar.y) + "-" + (j + peca_a_redenrizar.x)).attr("style", style);
+                    } 
+                    
                 }
             }
         }
         
         function step(){
-            limpar_peca(peca);
-            peca.y += 1;
-            renderizar_peca(peca);
-            setTimeout(step, 500)
+            if (detectar_colisao() == false && movimento_livre()){
+                limpar_peca(peca);
+                peca.y += 1;
+                renderizar_peca(peca);
+                setTimeout(step, 500);
+            } else {
+                for (var i = 0; i < 4; i++){
+                    for (var j = 0; j < 4; j++){
+                        if (peca.matriz[i][j] == 1){
+                            tabuleiro.matriz[i + peca.y][j + peca.x] = 1;
+                        } 
+                    }
+                }
+                verificar_linhas();
+                var numero = Math.floor((Math.random() * 7));
+                
+                peca = new Peca();
+                peca.y = 0;
+                $(pecas[numero]).trigger("click");
+                //peca.setar_forma(O);
+                //renderizar_peca(peca);
+                setTimeout(step, 500);
+            }
+        }
+        
+        function verificar_linhas(){
+            var linha  = null;
+
+            for (var i = tabuleiro.altura - 1; i > 0; i--){
+                linha = true;
+                for (var j = 0; j < tabuleiro.largura; j++){
+                    if (tabuleiro.matriz[i][j] == 0){
+                        linha = false;
+                        break;
+                    } 
+                }
+                if (linha == true){
+                    console.log(i);
+                    for (var j = 0; j < tabuleiro.largura; j++){
+                        style="background-color: #C3C3C3; width: 32px; height: 32px;";
+                        $("#celula-" + i + "-" + j).attr("style", style);
+                    }
+                }
+            }
         }
         
          function renderizar_tabuleiro(tabuleiro_a_redenrizar){
@@ -65,6 +123,7 @@
             setTimeout(step, 500);
             $(document).bind("keyup", function(evento){
                 if (evento.which == 37){
+                    
                     limpar_peca(peca);
                     peca.x -= 1;
                     renderizar_peca(peca);
@@ -73,9 +132,15 @@
                     peca.x += 1;
                     renderizar_peca(peca);
                     
+                } else if (evento.which == 40){
+                    limpar_peca(peca);
+                    peca.y += 1;
+                    renderizar_peca(peca);
+                    
                 }
             });
             $("#rotacionar").bind("click", function(evento){
+                limpar_peca(peca);
                 peca.rotacionar();
                 renderizar_peca(peca);
                 return false;
