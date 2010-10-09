@@ -30,7 +30,6 @@ function Tetris(){
             return;
         }
         if (this.movimento_livre() && !(this.peca.y  + 2 + 7 > this.tabuleiro.altura)){
-            console.log("sim");
             this.render.limpar_peca(this.peca);
             this.peca.y += 1;
             this.render.renderizar_peca(this.peca);
@@ -78,7 +77,7 @@ function Tetris(){
     };
     
     this.movimentar_peca_direita = function(){
-        if (this.peca.x + this.peca.direita + 2 < this.tabuleiro.largura){
+        if (this.peca.x + this.peca.direita + 1 + 2 < this.tabuleiro.largura){
             this.peca.x += 1;
             return true;
         } else {

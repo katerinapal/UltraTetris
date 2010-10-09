@@ -108,7 +108,7 @@ function Peca(){
     };
     
     this.direita_pivot = function(){
-        for (var i = 4; i > this.pivot_y; i--){
+        for (var i = 3; i >= this.pivot_y; i--){
             for (var j = 0; j < 4; j++){
                 if (this.matriz[j][i] == 1){
                   this.direita = i - this.pivot_y;
@@ -143,6 +143,8 @@ function Peca(){
             this.matriz = matriz_temporaria.clone();
             this.esquerda_pivot();
             this.direita_pivot();
+            console.log(this.direita);
+        //    console.log(this.esquerda);
         }
     };
 }
