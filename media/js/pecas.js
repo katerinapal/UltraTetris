@@ -79,18 +79,44 @@ var T = {
 
 function Peca(){
     this.matriz = [];
-    this.x = 2;
+    this.x = 0;
     this.y = 0;
     this.pivot_x = 1;
     this.pivot_y = 2;
     this.rotacao = 1;
     this.rotacoes = 4;
+    this.esquerda = 0;
+    this.direita = 0;
     
     this.setar_forma = function(forma){
         this.matriz = forma.matriz.clone();
         this.rotacoes = forma.rotacoes;
         this.rotacao = 1;
-    }
+        this.esquerda_pivot();
+        this.direita_pivot();
+    };
+    
+    this.esquerda_pivot = function(){
+        for (var i = 0; i < this.pivot_y; i++){
+            for (var j = 0; j < 4; j++){
+                if (this.matriz[j][i] == 1){
+                  this.esquerda = this.pivot_y - i;
+                  return;
+                }
+            }  
+        }  
+    };
+    
+    this.direita_pivot = function(){
+        for (var i = 4; i > this.pivot_y; i--){
+            for (var j = 0; j < 4; j++){
+                if (this.matriz[j][i] == 1){
+                  this.direita = i - this.pivot_y;
+                  return;
+                }
+            }  
+        }  
+    };
     
     this.rotacionar = function(){
         var matriz_temporaria = vazio.clone();
@@ -115,6 +141,8 @@ function Peca(){
               this.rotacao = 1;
             } 
             this.matriz = matriz_temporaria.clone();
+            this.esquerda_pivot();
+            this.direita_pivot();
         }
     };
 }
