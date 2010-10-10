@@ -14,74 +14,95 @@ var vazio = [
  [0, 0, 0, 0],
  [0, 0, 0, 0]
              ];
-var O = [
+var O = {
+  "matriz":[
+    [0, 0, 0, 0],
+    [0, 1, 1, 0],
+    [0, 1, 1, 0],
+    [0, 0, 0, 0]],
+  "rotacoes": 1
+};
+
+var I = {
+  "matriz": [
+    [0, 0, 1, 0],
+    [0, 0, 1, 0],
+    [0, 0, 1, 0],
+    [0, 0, 1, 0]],
+  "rotacoes": 2
+};
+
+var S = {
+  "matriz": [
+    [0, 0, 0, 0],
+    [0, 0, 1, 1],
+    [0, 1, 1, 0],
+    [0, 0, 0, 0]],
+  "rotacoes": 2
+};
+
+var Z = {
+ "matriz": [
  [0, 0, 0, 0],
  [0, 1, 1, 0],
- [0, 1, 1, 0],
- [0, 0, 0, 0]
-             ];
-
-var I = [
- [0, 0, 1, 0],
- [0, 0, 1, 0],
- [0, 0, 1, 0],
- [0, 0, 1, 0]
-             ];
-
-var S = [
- [0, 0, 0, 0],
  [0, 0, 1, 1],
- [0, 1, 1, 0],
- [0, 0, 0, 0]
-             ];
+ [0, 0, 0, 0]],
+ "rotacoes": 2
+};
 
-var Z = [
- [0, 0, 0, 0],
- [0, 1, 1, 0],
- [0, 0, 1, 1],
- [0, 0, 0, 0]
-             ];
-
-var L = [
- [0, 0, 1, 0],
- [0, 0, 1, 0],
- [0, 0, 1, 1],
- [0, 0, 0, 0]
-             ];
-var J = [
+var L = {
+ "matriz": [
+  [0, 0, 1, 0],
+  [0, 0, 1, 0],
+  [0, 0, 1, 1],
+  [0, 0, 0, 0]],
+ "rotacoes": 4
+};
+var J = {
+ "matriz": [
  [0, 0, 1, 0],
  [0, 0, 1, 0],
  [0, 1, 1, 0],
- [0, 0, 0, 0]
-             ];
+ [0, 0, 0, 0]],
+ "rotacoes": 4
+};
 
-var T = [
+var T = {
+  "matriz": [
     [0, 0, 0, 0],
     [0, 1, 1, 1],
     [0, 0, 1, 0],
-    [0, 0, 0, 0]
-                ]
+    [0, 0, 0, 0]],
+  "rotacoes": 4
+};
 
 
 function Peca(){
     this.matriz = [];
+    this.x = 2;
+    this.y = 0;
     this.pivot_x = 1;
     this.pivot_y = 2;
-    this.forma_atual = 1;
-    this.quantidade_formas = 4;
+    this.rotacao = 1;
+    this.rotacoes = 4;
+    
+    this.setar_forma = function(forma){
+        this.matriz = forma.matriz.clone();
+        this.rotacoes = forma.rotacoes;
+        this.rotacao = 1;
+    }
+    
     this.rotacionar = function(){
         var matriz_temporaria = vazio.clone();
-        console.log(matriz_temporaria);
-        console.log(this.matriz);
-        if (this.quantidade_formas != 1){
+        if (this.rotacoes != 1){
             for (var i = 0; i < 4; i++){
                 for (var j = 0; j < 4; j++){
                     if (this.matriz[i][j] == 1){
-                        if (this.quantidade_formas == 4 || (this.quantidade_formas == 2 && this.forma_atual == 1)){
+                        if (this.rotacoes == 4 || (this.rotacoes == 2 && this.rotacao == 1)){
                             var novo_x = j + this.pivot_x - this.pivot_y;
                             var novo_y = this.pivot_x + this.pivot_y - i;
                             matriz_temporaria[novo_x][novo_y] = 1;
-                        } else if (this.quantidade_formas == 2 && this.forma_atual == 2){
+                        } else if (this.rotacoes == 2 && this.rotacao == 2){
                             var novo_x = this.pivot_x + this.pivot_y - j;
                             var novo_y = i + this.pivot_x - this.pivot_y + 2;
                             matriz_temporaria[novo_x][novo_y] = 1; 
@@ -89,42 +110,12 @@ function Peca(){
                     }   
                 }
             }
-            this.forma_atual += 1;
-            if ((this.quantidade_formas == 4 && this.forma_atual > 4) || (this.quantidade_formas == 2 && this.forma_atual > 2)){
-              this.forma_atual = 1;
+            this.rotacao += 1;
+            if ((this.rotacoes == 4 && this.rotacao > 4) || (this.rotacoes == 2 && this.rotacao > 2)){
+              this.rotacao = 1;
             } 
-            console.log(matriz_temporaria);
             this.matriz = matriz_temporaria.clone();
         }
     };
-}
-
-function PecaDoisMovimentos(){
-  Peca.apply(this);
-  this.rotacionada = false;
-  this.rotacionar = function(){
-        var matriz_temporaria = vazio.clone();
-        console.log(matriz_temporaria);
-        console.log(this.matriz);
-        for (var i = 0; i < 4; i++){
-            for (var j = 0; j < 4; j++){
-                if (this.matriz[i][j] == 1){
-                    if (this.rotacionada == false){
-                        this.rotacionada = true; 
-                        var novo_x = j + this.pivot_x - this.pivot_y;
-                        var novo_y = this.pivot_x + this.pivot_y - i;
-                        matriz_temporaria[novo_x][novo_y] = 1;
-                    } else {
-                        this.rotacionada = false;
-                        var novo_x = this.pivot_x + this.pivot_y - j;
-                        var novo_y = i + this.pivot_x - this.pivot_y;
-                        matriz_temporaria[novo_x][novo_y] = 1;
-                    }    
-                }   
-            }
-        }
-        console.log(matriz_temporaria);
-        this.matriz = matriz_temporaria.concat();  
-  }
 }
 

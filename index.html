@@ -1,10 +1,15 @@
 <html>
 <head>
     <script type="text/javascript" src="media/js/pecas.js"></script>
+    <script type="text/javascript" src="media/js/tabuleiro.js"></script>
     <script type="text/javascript" src="media/js/jquery.js"></script>
     <script type="text/javascript">
         var peca = new Peca();
-        peca.matriz = L;
+        var tabuleiro = new Tabuleiro();
+        tabuleiro.gerar_tabuleiro(10, 20);
+        peca.setar_forma(L);
+        
+        
         function renderizar_peca(peca_a_redenrizar){
             for (var i = 0; i < 4; i++){
                 for (var j = 0; j < 4; j++){
@@ -14,63 +19,99 @@
                     } else {
                         style="background-color: #C3C3C3; width: 32px; height: 32px;";
                     }
+                    $("#celula-" + (i + peca_a_redenrizar.y) + "-" + (j + peca_a_redenrizar.x)).attr("style", style);
+                }
+            }
+        }
+        
+        function limpar_peca(peca_a_redenrizar){
+            for (var i = 0; i < 4; i++){
+                for (var j = 0; j < 4; j++){
+                    var style = "";
+                    if (peca_a_redenrizar.matriz[i][j] == 1){
+                        style="background-color: #C3C3C3; width: 32px; height: 32px;";
+                    } else {
+                        style="background-color: #C3C3C3; width: 32px; height: 32px;";
+                    }
+                    $("#celula-" + (i + peca_a_redenrizar.y) + "-" + (j + peca_a_redenrizar.x)).attr("style", style);
+                }
+            }
+        }
+        
+        function step(){
+            limpar_peca(peca);
+            peca.y += 1;
+            renderizar_peca(peca);
+            setTimeout(step, 500)
+        }
+        
+         function renderizar_tabuleiro(tabuleiro_a_redenrizar){
+            for (var i = 0; i < tabuleiro_a_redenrizar.altura; i++){
+                for (var j = 0; j < tabuleiro_a_redenrizar.largura; j++){
+                    var style = "";
+                    if (tabuleiro_a_redenrizar.matriz[i][j] == 1){
+                        style="background-color: #FF0000; width: 32px; height: 32px;";
+                    } else {
+                        style="background-color: #C3C3C3; width: 32px; height: 32px;";
+                    }
                     $("#celula-" + i + "-" + j).attr("style", style);
                 }
             }
         }
+        
         $(document).ready(function(){
+            renderizar_tabuleiro(tabuleiro);
             renderizar_peca(peca);
+            setTimeout(step, 500);
+            $(document).bind("keyup", function(evento){
+                if (evento.which == 37){
+                    limpar_peca(peca);
+                    peca.x -= 1;
+                    renderizar_peca(peca);
+                } else if (evento.which == 39){
+                    limpar_peca(peca);
+                    peca.x += 1;
+                    renderizar_peca(peca);
+                    
+                }
+            });
             $("#rotacionar").bind("click", function(evento){
                 peca.rotacionar();
                 renderizar_peca(peca);
                 return false;
             });
             $("#o").bind("click", function(evento){
-                peca.matriz = O;
-                peca.quantidade_formas = 1;
-                peca.forma_atual = 1;
+                peca.setar_forma(O);
                 renderizar_peca(peca);
                 return false;
             });
             $("#i").bind("click", function(evento){
-                peca.matriz = I;
-                peca.quantidade_formas = 2;
-                peca.forma_atual = 1;
+                peca.setar_forma(I);
                 renderizar_peca(peca);
                 return false;
             });
             $("#s").bind("click", function(evento){
-                peca.matriz = S;
-                peca.quantidade_formas = 2;
-                peca.forma_atual = 1;
+                peca.setar_forma(S);
                 renderizar_peca(peca);
                 return false;
             });
             $("#z").bind("click", function(evento){
-                peca.matriz = Z;
-                peca.quantidade_formas = 2;
-                peca.forma_atual = 1;
+                peca.setar_forma(Z);
                 renderizar_peca(peca);
                 return false;
             });
             $("#j").bind("click", function(evento){
-                peca.matriz = J;
-                peca.quantidade_formas = 4;
-                peca.forma_atual = 1;
+                peca.setar_forma(J);
                 renderizar_peca(peca);
                 return false;
             });
             $("#l").bind("click", function(evento){
-                peca.matriz = L;
-                peca.quantidade_formas = 4;
-                peca.forma_atual = 1;
+                peca.setar_forma(L);
                 renderizar_peca(peca);
                 return false;
             });
             $("#t").bind("click", function(evento){
-                peca.matriz = T;
-                peca.quantidade_formas = 4;
-                peca.forma_atual = 1;
+                peca.setar_forma(T);
                 renderizar_peca(peca);
                 return false;
             });
@@ -78,7 +119,7 @@
     </script>
 </head>
 <body>
-    <table>
+  <!--  <table>
         <tr>
             <td id="celula-0-0" style="background-color- #000000; width- 32px; height- 32px;"></td>
             <td id="celula-0-1"></td>
@@ -102,6 +143,188 @@
             <td id="celula-3-1"></td>
             <td id="celula-3-2"></td>
             <td id="celula-3-3"></td>
+        </tr>
+    </table> -->
+    <table>
+        <tr>
+            <td id="celula-0-0"></td>
+            <td id="celula-0-1"></td>
+            <td id="celula-0-2"></td>
+            <td id="celula-0-3"></td>
+            <td id="celula-0-4"></td>
+            <td id="celula-0-5"></td>
+            <td id="celula-0-6"></td>
+            <td id="celula-0-7"></td>
+            <td id="celula-0-8"></td>
+            <td id="celula-0-9"></td>
+        </tr>
+        <tr>
+            <td id="celula-1-0"></td>
+            <td id="celula-1-1"></td>
+            <td id="celula-1-2"></td>
+            <td id="celula-1-3"></td>
+            <td id="celula-1-4"></td>
+            <td id="celula-1-5"></td>
+            <td id="celula-1-6"></td>
+            <td id="celula-1-7"></td>
+            <td id="celula-1-8"></td>
+            <td id="celula-1-9"></td>
+        </tr>
+        <tr>
+            <td id="celula-2-0"></td>
+            <td id="celula-2-1"></td>
+            <td id="celula-2-2"></td>
+            <td id="celula-2-3"></td>
+            <td id="celula-2-4"></td>
+            <td id="celula-2-5"></td>
+            <td id="celula-2-6"></td>
+            <td id="celula-2-7"></td>
+            <td id="celula-2-8"></td>
+            <td id="celula-2-9"></td>
+        </tr>
+        <tr>
+            <td id="celula-3-0"></td>
+            <td id="celula-3-1"></td>
+            <td id="celula-3-2"></td>
+            <td id="celula-3-3"></td>
+            <td id="celula-3-4"></td>
+            <td id="celula-3-5"></td>
+            <td id="celula-3-6"></td>
+            <td id="celula-3-7"></td>
+            <td id="celula-3-8"></td>
+            <td id="celula-3-9"></td>
+        </tr>
+        <tr>
+            <td id="celula-4-0"></td>
+            <td id="celula-4-1"></td>
+            <td id="celula-4-2"></td>
+            <td id="celula-4-3"></td>
+            <td id="celula-4-4"></td>
+            <td id="celula-4-5"></td>
+            <td id="celula-4-6"></td>
+            <td id="celula-4-7"></td>
+            <td id="celula-4-8"></td>
+            <td id="celula-4-9"></td>
+        </tr>
+        <tr>
+            <td id="celula-5-0"></td>
+            <td id="celula-5-1"></td>
+            <td id="celula-5-2"></td>
+            <td id="celula-5-3"></td>
+            <td id="celula-5-4"></td>
+            <td id="celula-5-5"></td>
+            <td id="celula-5-6"></td>
+            <td id="celula-5-7"></td>
+            <td id="celula-5-8"></td>
+            <td id="celula-5-9"></td>
+        </tr>
+        <tr>
+            <td id="celula-6-0"></td>
+            <td id="celula-6-1"></td>
+            <td id="celula-6-2"></td>
+            <td id="celula-6-3"></td>
+            <td id="celula-6-4"></td>
+            <td id="celula-6-5"></td>
+            <td id="celula-6-6"></td>
+            <td id="celula-6-7"></td>
+            <td id="celula-6-8"></td>
+            <td id="celula-6-9"></td>
+        </tr>
+        <tr>
+            <td id="celula-7-0"></td>
+            <td id="celula-7-1"></td>
+            <td id="celula-7-2"></td>
+            <td id="celula-7-3"></td>
+            <td id="celula-7-4"></td>
+            <td id="celula-7-5"></td>
+            <td id="celula-7-6"></td>
+            <td id="celula-7-7"></td>
+            <td id="celula-7-8"></td>
+            <td id="celula-7-9"></td>
+        </tr>
+        <tr>
+            <td id="celula-8-0"></td>
+            <td id="celula-8-1"></td>
+            <td id="celula-8-2"></td>
+            <td id="celula-8-3"></td>
+            <td id="celula-8-4"></td>
+            <td id="celula-8-5"></td>
+            <td id="celula-8-6"></td>
+            <td id="celula-8-7"></td>
+            <td id="celula-8-8"></td>
+            <td id="celula-8-9"></td>
+        </tr>
+        <tr>
+            <td id="celula-9-0"></td>
+            <td id="celula-9-1"></td>
+            <td id="celula-9-2"></td>
+            <td id="celula-9-3"></td>
+            <td id="celula-9-4"></td>
+            <td id="celula-9-5"></td>
+            <td id="celula-9-6"></td>
+            <td id="celula-9-7"></td>
+            <td id="celula-9-8"></td>
+            <td id="celula-9-9"></td>
+        </tr>
+        <tr>
+            <td id="celula-10-0"></td>
+            <td id="celula-10-1"></td>
+            <td id="celula-10-2"></td>
+            <td id="celula-10-3"></td>
+            <td id="celula-10-4"></td>
+            <td id="celula-10-5"></td>
+            <td id="celula-10-6"></td>
+            <td id="celula-10-7"></td>
+            <td id="celula-10-8"></td>
+            <td id="celula-10-9"></td>
+        </tr>
+        <tr>
+            <td id="celula-11-0"></td>
+            <td id="celula-11-1"></td>
+            <td id="celula-11-2"></td>
+            <td id="celula-11-3"></td>
+            <td id="celula-11-4"></td>
+            <td id="celula-11-5"></td>
+            <td id="celula-11-6"></td>
+            <td id="celula-11-7"></td>
+            <td id="celula-11-8"></td>
+            <td id="celula-11-9"></td>
+        </tr>
+        <tr>
+            <td id="celula-12-0"></td>
+            <td id="celula-12-1"></td>
+            <td id="celula-12-2"></td>
+            <td id="celula-12-3"></td>
+            <td id="celula-12-4"></td>
+            <td id="celula-12-5"></td>
+            <td id="celula-12-6"></td>
+            <td id="celula-12-7"></td>
+            <td id="celula-12-8"></td>
+            <td id="celula-12-9"></td>
+        </tr>
+        <tr>
+            <td id="celula-13-0"></td>
+            <td id="celula-13-1"></td>
+            <td id="celula-13-2"></td>
+            <td id="celula-13-3"></td>
+            <td id="celula-13-4"></td>
+            <td id="celula-13-5"></td>
+            <td id="celula-13-6"></td>
+            <td id="celula-13-7"></td>
+            <td id="celula-13-8"></td>
+            <td id="celula-13-9"></td>
+        </tr>
+        <tr>
+            <td id="celula-14-0"></td>
+            <td id="celula-14-1"></td>
+            <td id="celula-14-2"></td>
+            <td id="celula-14-3"></td>
+            <td id="celula-14-4"></td>
+            <td id="celula-14-5"></td>
+            <td id="celula-14-6"></td>
+            <td id="celula-14-7"></td>
+            <td id="celula-14-8"></td>
+            <td id="celula-14-9"></td>
         </tr>
     </table>
     <a href="#" id="rotacionar">Rotacionar</a>
