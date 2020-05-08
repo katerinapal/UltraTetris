@@ -1,4 +1,6 @@
-function DefaultRender(){
+import ".\\jquery.js";
+
+export function DefaultRender() {
     this.renderizar_peca = function(peca_a_renderizar){
         for (var i = 0; i < 4; i++){
             for (var j = 0; j < 4; j++){
