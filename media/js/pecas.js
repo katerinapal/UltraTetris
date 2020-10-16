@@ -1,3 +1,5 @@
+import ".\\jquery.js";
+var i;
 Array.prototype.clone = function() {
   var newObj = (this instanceof Array) ? [] : {};
   for (i in this) {
@@ -14,7 +16,8 @@ var vazio = [
  [0, 0, 0, 0],
  [0, 0, 0, 0]
              ];
-var O = {
+
+export var O = {
   "matriz":[
     [0, 0, 0, 0],
     [0, 1, 1, 0],
@@ -23,7 +26,7 @@ var O = {
   "rotacoes": 1
 };
 
-var I = {
+export var I = {
   "matriz": [
     [0, 0, 1, 0],
     [0, 0, 1, 0],
@@ -32,7 +35,7 @@ var I = {
   "rotacoes": 2
 };
 
-var S = {
+export var S = {
   "matriz": [
     [0, 0, 0, 0],
     [0, 0, 1, 1],
@@ -41,7 +44,7 @@ var S = {
   "rotacoes": 2
 };
 
-var Z = {
+export var Z = {
  "matriz": [
  [0, 0, 0, 0],
  [0, 1, 1, 0],
@@ -50,7 +53,7 @@ var Z = {
  "rotacoes": 2
 };
 
-var L = {
+export var L = {
  "matriz": [
   [0, 0, 1, 0],
   [0, 0, 1, 0],
@@ -58,7 +61,8 @@ var L = {
   [0, 0, 0, 0]],
  "rotacoes": 4
 };
-var J = {
+
+export var J = {
  "matriz": [
  [0, 0, 1, 0],
  [0, 0, 1, 0],
@@ -67,7 +71,7 @@ var J = {
  "rotacoes": 4
 };
 
-var T = {
+export var T = {
   "matriz": [
     [0, 0, 0, 0],
     [0, 1, 1, 1],
@@ -76,8 +80,7 @@ var T = {
   "rotacoes": 4
 };
 
-
-function Peca(){
+export function Peca() {
     this.matriz = [];
     this.x = 0;
     this.y = 0;

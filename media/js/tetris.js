@@ -1,4 +1,17 @@
-function Tetris(){
+import ".\\jquery.js";
+import { T } from ".\\pecas.js";
+import { J } from ".\\pecas.js";
+import { L } from ".\\pecas.js";
+import { Z } from ".\\pecas.js";
+import { S } from ".\\pecas.js";
+import { I } from ".\\pecas.js";
+import { O } from ".\\pecas.js";
+import { Tabuleiro } from ".\\tabuleiro.js";
+import { DefaultRender } from ".\\renders.js";
+import { Peca } from ".\\pecas.js";
+var style;
+
+export function Tetris() {
     this.game_over = false;
     this.render = null;
     this.paused = false;

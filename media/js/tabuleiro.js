@@ -1,4 +1,6 @@
-function Tabuleiro(){
+import ".\\jquery.js";
+
+export function Tabuleiro() {
     this.largura = 0;
     this.altura = 0;
     this.matriz = [];
