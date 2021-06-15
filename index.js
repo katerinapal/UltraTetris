@@ -1,5 +1,7 @@
 
-        var jogo = null;
+        import ".\\media\\js\\jquery.js";
+        import { Tetris } from ".\\media\\js\\tetris.js";
+        export var jogo = null;
         $(document).ready(function(){
             jogo = new Tetris();
             jogo.start();
